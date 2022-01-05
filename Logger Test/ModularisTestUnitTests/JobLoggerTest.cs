@@ -10,13 +10,13 @@ namespace ModularisTestUnitTests
         private const string WarningMessage = "Test Warning";
         private const string ErrorMessage = "Test Error";
 
-        [TestMethod]
-        public void JobLoggerBasicTest()
-        {
-            var jobLogger = new JobLogger(true, true, true, true, true);
-            JobLogger.LogMessage(TestMessage, true, false, false);
-            JobLogger.LogMessage(WarningMessage, false, true, false);
-            JobLogger.LogMessage(ErrorMessage, false, false, true);
-        }
+        //[TestMethod]
+        //public void JobLoggerBasicTest()
+        //{
+        //    var jobLogger = new JobLogger(true, true, true, true, true);
+        //    JobLogger.LogMessage(TestMessage, true, false, false);
+        //    JobLogger.LogMessage(WarningMessage, false, true, false);
+        //    JobLogger.LogMessage(ErrorMessage, false, false, true);
+        //}
     }
 }

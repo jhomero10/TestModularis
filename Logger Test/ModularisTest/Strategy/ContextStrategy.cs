@@ -1,16 +1,40 @@
-﻿
+﻿// ------------------------------------------------------------------------------------
+// <copyright file="ContextStrategy.cs" company="JHT">
+// Copyright (c) JHT. All rights reserved.
+// </copyright>
+// <author>Jaime Homero Trujillo Trujillo</author>
+// ------------------------------------------------------------------------------------
 namespace ModularisTest.Strategy
 {
     using ModularisTest.DTO;
     using ModularisTest.Enum;
     using ModularisTest.Interface;
-    
-    class ContextStrategy
+
+    /// <summary>
+    ///
+    /// </summary>
+    internal class ContextStrategy
     {
+        /// <summary>
+        ///
+        /// </summary>
+        private ILogType _oLogType;
+
+        /// <summary>
+        ///
+        /// </summary>
         private static ContextStrategy instance;
 
-        private ContextStrategy() { }
+        /// <summary>
+        ///
+        /// </summary>
+        private ContextStrategy()
+        { }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         public static ContextStrategy GetInstance()
         {
             if (instance == null)
@@ -20,30 +44,41 @@ namespace ModularisTest.Strategy
             return instance;
         }
 
-        private ILogType oLogType;
 
+        public void SetEstrategy(ILogType oLogType)
+        {
+            this._oLogType = oLogType;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="logData"></param>
+        /// <returns></returns>
         public string log(ILogDataDTO logData)
         {
             switch (logData.logType)
             {
                 case (LogType.Error):
                     {
-                        this.oLogType = new ErrorStrategy();
+                        this._oLogType = new ErrorStrategy();
                     }
                     break;
+
                 case (LogType.Message):
                     {
-                        this.oLogType = new MessageStrategy();
+                        this._oLogType = new MessageStrategy();
                     }
                     break;
+
                 case (LogType.Warning):
                     {
-                        this.oLogType = new WarningStrategy();
+                        this._oLogType = new WarningStrategy();
                     }
                     break;
             }
 
-            return this.oLogType.saveLog(logData);
+            return this._oLogType.saveLog(logData);
         }
     }
 }

@@ -1,4 +1,10 @@
-﻿namespace ModularisTest.Util
+﻿// ------------------------------------------------------------------------------------
+// <copyright file="LogDestination.cs" company="JHT">
+// Copyright (c) JHT. All rights reserved.
+// </copyright>
+// <author>Jaime Homero Trujillo Trujillo</author>
+// ------------------------------------------------------------------------------------
+namespace ModularisTest.Util
 {
     using ModularisTest.DTO;
     using ModularisTest.Enum;
@@ -7,9 +13,18 @@
 
     public class LogDestination : ILogDestinationAcction
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public LogDestination()
         { }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logData"></param>
+        /// <param name="logDestinationsType"></param>
+        /// <returns></returns>
         public string saveLogDestination(ILogDataDTO logData, LogDestinationsType logDestinationsType)
         {
             FactoryLogDestinations factoryLogDestinations = new FactoryLogDestinations(logDestinationsType);

@@ -1,15 +1,19 @@
-﻿using ModularisTest.DTO;
-using ModularisTest.Exceptions;
-using ModularisTest.Strategy;
-using System;
-using System.Configuration;
-using System.IO;
-using System.Runtime.Remoting.Contexts;
-
+﻿// ------------------------------------------------------------------------------------
+// <copyright file="JobLogger.cs" company="JHT">
+// Copyright (c) JHT. All rights reserved.
+// </copyright>
+// <author>Jaime Homero Trujillo Trujillo</author>
+// ------------------------------------------------------------------------------------
 namespace ModularisTest
 {
+    using ModularisTest.DTO;
+    using ModularisTest.Exceptions;
+    using ModularisTest.Strategy;
+    using System;
+    using System.Configuration;
+
     public class JobLogger
-    {       
+    {
         private static readonly bool _logToFile = bool.Parse(ConfigurationManager.AppSettings["LogToFile"]);
         private static readonly bool _logToConsole = bool.Parse(ConfigurationManager.AppSettings["LogToConsole"]);
         private static bool _initialized;
@@ -31,6 +35,8 @@ namespace ModularisTest
 
         public string LogMessage(ILogDataDTO logData)
         {
+            if (!_initialized) throw new JobLoggerNotInitializedException();
+
             if (!_logToConsole && !_logToFile)
             {
                 throw new Exception("Invalid configuration");

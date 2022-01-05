@@ -1,4 +1,9 @@
-﻿
+﻿// ------------------------------------------------------------------------------------
+// <copyright file="ConsoleBL.cs" company="JHT">
+// Copyright (c) JHT. All rights reserved.
+// </copyright>
+// <author>Jaime Homero Trujillo Trujillo</author>
+// ------------------------------------------------------------------------------------
 namespace ModularisTest.LogDestinations
 {
     using ModularisTest.DTO;
@@ -6,12 +11,25 @@ namespace ModularisTest.LogDestinations
     using ModularisTest.LogDestinations.Factory;
     using System;
 
+    /// <summary>
+    /// 
+    /// </summary>
     internal class ConsoleBL : IFactoryLogDestinations
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public ILogDataDTO logData { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ConsoleBL() { }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string saveLog()
         {
             switch (logData.logType)
@@ -28,6 +46,7 @@ namespace ModularisTest.LogDestinations
                 default:
                     break;
             }
+
             Console.WriteLine(DateTime.Now.ToString() + logData.message);
 
             return "save log in console";

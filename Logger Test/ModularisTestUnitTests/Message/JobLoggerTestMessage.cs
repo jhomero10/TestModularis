@@ -1,4 +1,4 @@
-﻿namespace ModularisTestUnitTests.Error
+﻿namespace ModularisTestUnitTests.Message
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using ModularisTest;
@@ -7,15 +7,15 @@
     using ModularisTest.Resources;
 
     [TestClass]
-    public class JobLoggerTestError
+    public class JobLoggerTestMessage
     {
         [TestMethod]
-        public void Test1()
+        public void Test2()
         {
             //Arrange
             LogDataBO logData = new LogDataBO
             {
-                logType = LogType.Error
+                logType = LogType.Message
             };
             JobLogger jobLogger = JobLogger.GetInstance();
 
@@ -23,7 +23,7 @@
             string result = jobLogger.LogMessage(logData);
 
             //Assert
-            Assert.AreEqual(ResourcesGeneral.StrategyError, result);
+            Assert.AreEqual(ResourcesGeneral.StrategyMessage, result);
         }
     }
 }

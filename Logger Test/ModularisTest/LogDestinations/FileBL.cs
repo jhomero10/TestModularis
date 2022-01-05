@@ -1,4 +1,10 @@
-﻿namespace ModularisTest.LogDestinations
+﻿// ------------------------------------------------------------------------------------
+// <copyright file="FileBL.cs" company="JHT">
+// Copyright (c) JHT. All rights reserved.
+// </copyright>
+// <author>Jaime Homero Trujillo Trujillo</author>
+// ------------------------------------------------------------------------------------
+namespace ModularisTest.LogDestinations
 {
     using ModularisTest.DTO;
     using ModularisTest.LogDestinations.Factory;
@@ -6,32 +12,46 @@
     using System.Configuration;
     using System.IO;
 
+    /// <summary>
+    /// 
+    /// </summary>
     internal class FileBL : IFactoryLogDestinations
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public ILogDataDTO logData { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public FileBL()
         { }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string saveLog()
         {
-            string l = string.Empty;
+            string stringFileContent = string.Empty;
 
-            var logFolder = ConfigurationManager.AppSettings["LogFileDirectory"];
-            if (string.IsNullOrEmpty(logFolder)) logFolder = Environment.CurrentDirectory;
-            var logFileName = "LogFile" + DateTime.Now.ToShortDateString().Replace("/", ".") + ".txt";
-            var logFullFilePath = Path.Combine(logFolder, logFileName);
-
-            if (File.Exists(logFullFilePath))
-            {
-                l = File.ReadAllText(logFullFilePath);
-            }
-
-            l = l + DateTime.Now.ToString() + $" {logData.logType}   " + logData.message + Environment.NewLine;
+            string logFolder = ConfigurationManager.AppSettings["LogFileDirectory"];
 
             if (!Directory.Exists(logFolder)) Directory.CreateDirectory(logFolder);
 
-            System.IO.File.WriteAllText(logFullFilePath, l);
+            if (string.IsNullOrEmpty(logFolder)) logFolder = Environment.CurrentDirectory;
+
+            string logFullFilePath = Path.Combine(logFolder, $"LogFile{DateTime.Now.ToShortDateString().Replace("/", ".")}.txt");
+
+            if (File.Exists(logFullFilePath))
+            {
+                stringFileContent = File.ReadAllText(logFullFilePath);
+            }
+
+            stringFileContent = $"{stringFileContent}{DateTime.Now} - {logData.logType} - {logData.message} {Environment.NewLine}";
+
+            File.WriteAllText(logFullFilePath, stringFileContent);
 
             return "save log in file";
         }
