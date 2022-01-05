@@ -9,6 +9,7 @@ namespace ModularisTest.Enum
     public enum LogDestinationsType
     {
         Console,
-        File
+        File,
+        DatBase
     }
 }

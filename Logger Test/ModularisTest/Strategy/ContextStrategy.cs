@@ -4,11 +4,25 @@ namespace ModularisTest.Strategy
     using ModularisTest.DTO;
     using ModularisTest.Enum;
     using ModularisTest.Interface;
-    class Context
+    
+    class ContextStrategy
     {
+        private static ContextStrategy instance;
+
+        private ContextStrategy() { }
+
+        public static ContextStrategy GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new ContextStrategy();
+            }
+            return instance;
+        }
+
         private ILogType oLogType;
 
-        public void log(ILogDataDTO logData)
+        public string log(ILogDataDTO logData)
         {
             switch (logData.logType)
             {
@@ -29,7 +43,7 @@ namespace ModularisTest.Strategy
                     break;
             }
 
-            this.oLogType.saveLog(logData);
+            return this.oLogType.saveLog(logData);
         }
     }
 }

@@ -1,30 +1,43 @@
-﻿using ModularisTest.Exceptions;
+﻿using ModularisTest.DTO;
+using ModularisTest.Exceptions;
+using ModularisTest.Strategy;
 using System;
 using System.Configuration;
 using System.IO;
+using System.Runtime.Remoting.Contexts;
 
 namespace ModularisTest
 {
     public class JobLogger
-    {
-        private static bool _logToFile;
-        private static bool _logToConsole;
-
-        private static bool _logMessageType;
-        private static bool _logWarningType;
-        private static bool _logErrorType;
-
+    {       
+        private static readonly bool _logToFile = bool.Parse(ConfigurationManager.AppSettings["LogToFile"]);
+        private static readonly bool _logToConsole = bool.Parse(ConfigurationManager.AppSettings["LogToConsole"]);
         private static bool _initialized;
+        private static JobLogger instance;
 
-        public JobLogger(bool logToFile, bool logToConsole, bool logMessageType, bool logWarningType, bool logErrorType)
+        private JobLogger()
         {
-            _logErrorType = logErrorType;
-            _logMessageType = logMessageType;
-            _logWarningType = logWarningType;
-
-            _logToFile = logToFile;
-            _logToConsole = logToConsole;
             _initialized = true;
+        }
+
+        public static JobLogger GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new JobLogger();
+            }
+            return instance;
+        }
+
+        public string LogMessage(ILogDataDTO logData)
+        {
+            if (!_logToConsole && !_logToFile)
+            {
+                throw new Exception("Invalid configuration");
+            }
+
+            ContextStrategy contextStrategy = ContextStrategy.GetInstance();
+            return contextStrategy.log(logData);
         }
 
         public static void LogMessage(string message, bool messageType, bool warningType, bool errorType)
