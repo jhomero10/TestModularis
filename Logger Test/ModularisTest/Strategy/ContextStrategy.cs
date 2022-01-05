@@ -57,26 +57,26 @@ namespace ModularisTest.Strategy
         /// <returns></returns>
         public string log(ILogDataDTO logData)
         {
-            switch (logData.logType)
-            {
-                case (LogType.Error):
-                    {
-                        this._oLogType = new ErrorStrategy();
-                    }
-                    break;
+            //switch (logData.logType)
+            //{
+            //    case (LogType.Error):
+            //        {
+            //            this._oLogType = new ErrorStrategy();
+            //        }
+            //        break;
 
-                case (LogType.Message):
-                    {
-                        this._oLogType = new MessageStrategy();
-                    }
-                    break;
+            //    case (LogType.Message):
+            //        {
+            //            this._oLogType = new MessageStrategy();
+            //        }
+            //        break;
 
-                case (LogType.Warning):
-                    {
-                        this._oLogType = new WarningStrategy();
-                    }
-                    break;
-            }
+            //    case (LogType.Warning):
+            //        {
+            //            this._oLogType = new WarningStrategy();
+            //        }
+            //        break;
+            //}
 
             return this._oLogType.saveLog(logData);
         }

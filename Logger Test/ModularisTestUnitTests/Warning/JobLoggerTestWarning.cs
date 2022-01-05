@@ -5,6 +5,7 @@
     using ModularisTest.BO;
     using ModularisTest.Enum;
     using ModularisTest.Resources;
+    using ModularisTest.Strategy;
 
     [TestClass]
     public class JobLoggerTestWarning
@@ -20,7 +21,7 @@
             JobLogger jobLogger = JobLogger.GetInstance();
 
             //Act
-            string result = jobLogger.LogMessage(logData);
+            string result = jobLogger.LogMessage(logData, new WarningStrategy());
 
             //Assert
             Assert.AreEqual(ResourcesGeneral.StrategyWarning, result);

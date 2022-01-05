@@ -8,22 +8,48 @@ namespace ModularisTest
 {
     using ModularisTest.DTO;
     using ModularisTest.Exceptions;
+    using ModularisTest.Interface;
     using ModularisTest.Strategy;
     using System;
     using System.Configuration;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class JobLogger
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private static readonly bool _logToFile = bool.Parse(ConfigurationManager.AppSettings["LogToFile"]);
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static readonly bool _logToConsole = bool.Parse(ConfigurationManager.AppSettings["LogToConsole"]);
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static bool _initialized;
+
+        /// <summary>
+        /// 
+        /// </summary>
         private static JobLogger instance;
 
+        /// <summary>
+        /// 
+        /// </summary>
         private JobLogger()
         {
             _initialized = true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static JobLogger GetInstance()
         {
             if (instance == null)
@@ -33,7 +59,12 @@ namespace ModularisTest
             return instance;
         }
 
-        public string LogMessage(ILogDataDTO logData)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logData"></param>
+        /// <returns></returns>
+        public string LogMessage(ILogDataDTO logData, ILogType oLogTyp)
         {
             if (!_initialized) throw new JobLoggerNotInitializedException();
 
@@ -43,97 +74,8 @@ namespace ModularisTest
             }
 
             ContextStrategy contextStrategy = ContextStrategy.GetInstance();
+            contextStrategy.SetEstrategy(oLogTyp);
             return contextStrategy.log(logData);
-        }
-
-        public static void LogMessage(string message, bool messageType, bool warningType, bool errorType)
-        {
-
-            if (!_initialized) throw new JobLoggerNotInitializedException();
-
-            message.Trim();
-
-            if (message == null || message.Length == 0)
-            {
-                return;
-            }
-
-            if (!_logToConsole && !_logToFile)
-            {
-                throw new Exception("Invalid configuration");
-            }
-
-            if ((!_logErrorType && !_logMessageType && !_logWarningType) || (!messageType && !warningType && !errorType))
-            {
-                throw new Exception("Error or Warning or Message must be specified");
-            }
-
-            int t;
-
-            if (messageType && _logMessageType)
-            {
-                t = 1;
-            }
-
-            if (errorType && _logErrorType)
-            {
-                t = 2;
-            }
-
-            if (warningType && _logWarningType)
-            {
-                t = 3;
-            }
-
-            string l = string.Empty;
-
-            var logFolder = ConfigurationManager.AppSettings["LogFileDirectory"];
-            if (string.IsNullOrEmpty(logFolder)) logFolder = Environment.CurrentDirectory;
-            var logFileName = "LogFile" + DateTime.Now.ToShortDateString().Replace("/", ".") + ".txt";
-            var logFullFilePath = Path.Combine(logFolder, logFileName);
-
-            if (File.Exists(logFullFilePath))
-            {
-                l = File.ReadAllText(logFullFilePath);
-
-            }
-
-            if (errorType && _logErrorType)
-            {
-                l = l + DateTime.Now.ToShortDateString() + " Error   " + message + Environment.NewLine;
-            }
-
-            if (warningType && _logWarningType)
-            {
-                l = l + DateTime.Now.ToShortDateString() + " Warning " + message + Environment.NewLine;
-            }
-
-            if (messageType && _logMessageType)
-            {
-                l = l + DateTime.Now.ToShortDateString() + " Message " + message + Environment.NewLine;
-            }
-
-
-            if (!Directory.Exists(logFolder)) Directory.CreateDirectory(logFolder);
-
-            System.IO.File.WriteAllText(logFullFilePath, l);
-
-            if (errorType && _logErrorType)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
-
-            if (warningType && _logWarningType)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-            }
-
-            if (messageType && _logMessageType)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-
-            Console.WriteLine(DateTime.Now.ToShortDateString() + message);
-        }
+        }       
     }
 }
